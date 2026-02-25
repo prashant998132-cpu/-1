@@ -1,0 +1,32 @@
+/* Liquid Glassmorphism 2.0 - Dark Pink Theme */
+:root {
+  --primary: #ff1a88; /* Dark pink */
+  --glass-bg: rgba(255, 255, 255, 0.2);
+  --glass-border: rgba(255, 255, 255, 0.3);
+  --glass-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  --glass-blur: 20px;
+}
+
+.glassmorphic {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  box-shadow: var(--glass-shadow);
+  color: var(--primary);
+}
+
+/* Framer Motion animations */
+.bubble {
+  animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Mobile gestures */
+.swipe-area {
+  touch-action: pan-y pan-x;
+}
