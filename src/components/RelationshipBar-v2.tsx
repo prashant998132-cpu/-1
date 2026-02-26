@@ -24,7 +24,9 @@ const RelationshipBar = ({ level = 1 }) => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
     >
-      <h3 className="text-lg font-bold">Relationship Level: {currentLevel.name} {currentLevel.emoji}</h3>
+      <h3 className="text-lg font-bold">
+        Relationship Level: {currentLevel.name} {currentLevel.emoji}
+      </h3>
       <div className="h-2 bg-gray-200 rounded-full mt-2">
         <motion.div
           className={`h-full rounded-full`}

@@ -1,6 +1,7 @@
 import ChatInterface from "./components/ChatInterface-v4";
 import RelationshipBar from "./components/RelationshipBar-v2";
 import ToolCard from "./components/ToolCard-v2";
+import TransparencyPage from "./components/TransparencyPage";
 
 // Main Page
 const HomePage = () => {
@@ -16,6 +17,7 @@ const HomePage = () => {
         <ToolCard name="Canva" category="Design" url="https://canva.com" />
         <ToolCard name="Gemini" category="AI" url="https://gemini.google.com" />
       </div>
+      <TransparencyPage />
     </div>
   );
 };

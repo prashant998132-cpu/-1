@@ -19,8 +19,8 @@ const bubbleVariants = {
 
 // Mobile swipe gestures
 const handlers = useSwipeable({
-  onSwipedLeft: () => openToolsPanel(),
-  onSwipedUp: () => startVoiceInput(),
+  onSwipedLeft: () => console.log("Swiped left (tools)"),
+  onSwipedUp: () => console.log("Swiped up (voice)"),
 });
 
 // Main Chat Interface
