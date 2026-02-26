@@ -23,10 +23,10 @@ function safeGet(): RelationshipData {
 }
 
 function calcLevel(count: number): 1|2|3|4|5 {
-  if (count >= 500) return 5;
-  if (count >= 100) return 4;
-  if (count >= 25)  return 3;
-  if (count >= 5)   return 2;
+  if (count >= 50) return 5;
+  if (count >= 20) return 4;
+  if (count >= 10) return 3;
+  if (count >= 3)  return 2;
   return 1;
 }
 

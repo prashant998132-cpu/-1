@@ -14,7 +14,24 @@ export interface AILink {
   icon: string;           // emoji
   color: string;          // hex color for card
   freeType: 'free' | 'freemium' | 'limited' | 'credits';
-  tags: string[
+  tags: string[];
+  isActive: boolean;
+  addedAt: string;
+}
+
+export const AI_CATEGORIES = [
+  { id: 'all', name: 'All Tools', icon: '🚀' },
+  { id: 'image', name: 'Image', icon: '🎨' },
+  { id: 'video', name: 'Video', icon: '🎬' },
+  { id: 'writing', name: 'Writing', icon: '✍️' },
+  { id: 'code', name: 'Code', icon: '💻' },
+  { id: 'audio', name: 'Audio', icon: '🎵' },
+  { id: 'chat', name: 'Chat', icon: '💬' },
+  { id: 'design', name: 'Design', icon: '✨' },
+  { id: 'productivity', name: 'Productivity', icon: '📊' },
+];
+
+export const JARVIS_LINKS: AILink[] = [
   // ─────────────────────────────────────────────
   // 🎙️ AI VOICE & PODCAST
   // ─────────────────────────────────────────────
@@ -356,27 +373,7 @@ export interface AILink {
     isActive: true,
     addedAt: '2026-01-01',
   },
-];
-  isActive: boolean;
-  addedAt: string;        // ISO date
-}
 
-export const AI_CATEGORIES = [
-  { id: 'all',          name: 'All Tools',         icon: '🤖', color: '#ff1a88' },
-  { id: 'image',        name: 'AI Image',           icon: '🎨', color: '#ff6b6b' },
-  { id: 'video',        name: 'AI Video',           icon: '🎬', color: '#ffa500' },
-  { id: 'writing',      name: 'AI Writing',         icon: '✍️',  color: '#4ecdc4' },
-  { id: 'code',         name: 'AI Code',            icon: '💻', color: '#45b7d1' },
-  { id: 'audio',        name: 'AI Audio',           icon: '🎵', color: '#96ceb4' },
-  { id: 'chat',         name: 'AI Chat',            icon: '💬', color: '#9b59b6' },
-  { id: 'design',       name: 'AI Design',          icon: '🎭', color: '#e74c3c' },
-  { id: '3d',           name: 'AI 3D',              icon: '🧊', color: '#3498db' },
-  { id: 'search',       name: 'AI Search',          icon: '🔍', color: '#2ecc71' },
-  { id: 'productivity', name: 'Productivity',       icon: '⚡', color: '#f39c12' },
-  { id: 'avatar',       name: 'AI Avatar',          icon: '👤', color: '#e056fd' },
-] as const;
-
-export const JARVIS_LINKS: AILink[] = [
   // ─────────────────────────────────────────────
   // 🎨 AI IMAGE GENERATION
   // ─────────────────────────────────────────────
