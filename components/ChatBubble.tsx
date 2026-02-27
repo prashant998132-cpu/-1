@@ -11,18 +11,62 @@ interface Props {
 export default function ChatBubble({ message }: Props) {
   const isJarvis = message.role === 'jarvis';
 
-  // Parse markdown-style bold
+  // Simple markdown-like parser
   function renderContent(text: string) {
-    const parts = text.split(/(\*\*[^*]+\*\*)/g);
-    return parts.map((part, i) => {
-      if (part.startsWith('**') && part.endsWith('**')) {
-        return <strong key={i} className="text-[#ff1a88] font-semibold">{part.slice(2, -2)}</strong>;
-      }
-      if (part.startsWith('_(') && part.endsWith(')_')) {
-        return <em key={i} className="text-gray-500 text-xs">{part.slice(2, -2)}</em>;
-      }
-      return part;
+    // Handle bold: **text**
+    // Handle italic: _text_
+    // Handle links: [text](url)
+    
+    let parts: (string | JSX.Element)[] = [text];
+
+    // Bold
+    parts = parts.flatMap(part => {
+      if (typeof part !== 'string') return part;
+      const subParts = part.split(/(\*\*[^*]+\*\*)/g);
+      return subParts.map((sub, i) => {
+        if (sub.startsWith('**') && sub.endsWith('**')) {
+          return <strong key={`b-${i}`} className="text-[#ff1a88] font-semibold">{sub.slice(2, -2)}</strong>;
+        }
+        return sub;
+      });
     });
+
+    // Italic
+    parts = parts.flatMap(part => {
+      if (typeof part !== 'string') return part;
+      const subParts = part.split(/(_[^*]+_)/g);
+      return subParts.map((sub, i) => {
+        if (sub.startsWith('_') && sub.endsWith('_')) {
+          return <em key={`i-${i}`} className="text-gray-400 italic">{sub.slice(1, -1)}</em>;
+        }
+        return sub;
+      });
+    });
+
+    // Links
+    parts = parts.flatMap(part => {
+      if (typeof part !== 'string') return part;
+      const subParts = part.split(/(\[[^\]]+\]\([^)]+\))/g);
+      return subParts.map((sub, i) => {
+        const match = sub.match(/\[([^\]]+)\]\(([^)]+)\)/);
+        if (match) {
+          return (
+            <a 
+              key={`l-${i}`} 
+              href={match[2]} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-[#ff1a88] underline hover:text-[#ff4da6] transition-colors"
+            >
+              {match[1]}
+            </a>
+          );
+        }
+        return sub;
+      });
+    });
+
+    return parts;
   }
 
   return (

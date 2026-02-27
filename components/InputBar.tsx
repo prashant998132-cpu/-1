@@ -18,7 +18,9 @@ export default function InputBar({ onSend, isDisabled }: Props) {
 
   useEffect(() => {
     // Check voice support
-    setVoiceSupported('SpeechRecognition' in window || 'webkitSpeechRecognition' in window);
+    if (typeof window !== 'undefined') {
+      setVoiceSupported('SpeechRecognition' in window || 'webkitSpeechRecognition' in window);
+    }
   }, []);
 
   // Auto-resize textarea
@@ -54,7 +56,8 @@ export default function InputBar({ onSend, isDisabled }: Props) {
       return;
     }
 
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    if (!SpeechRecognition) return;
     const recognition = new SpeechRecognition();
     recognition.lang = 'hi-IN,en-IN,en-US'; // Hindi + English
     recognition.continuous = false;

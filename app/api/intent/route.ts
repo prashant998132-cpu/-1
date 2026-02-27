@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import OpenAI from 'openai';
 
 const SYSTEM_PROMPT = `You are JARVIS - an AI tool selector assistant.
 Analyze the user's request and return ONLY a JSON object.
@@ -38,7 +39,43 @@ export async function POST(request: NextRequest) {
           `${m.role}: ${m.content}`).join('\n')}`
       : '';
 
-    // TRY GEMINI FIRST
+    // TRY OPENAI FIRST (since we have the key)
+    const openaiKey = process.env.OPENAI_API_KEY;
+    if (openaiKey) {
+      try {
+        const client = new OpenAI({ apiKey: openaiKey });
+        const response = await client.chat.completions.create({
+          model: 'gpt-4.1-mini',
+          messages: [
+            { role: 'system', content: SYSTEM_PROMPT },
+            { role: 'user', content: `${contextText}\n\nUser: "${input}"` },
+          ],
+          response_format: { type: 'json_object' },
+          temperature: 0.1,
+          max_tokens: 200,
+        });
+
+        const content = response.choices[0].message.content;
+        if (content) {
+          const parsed = JSON.parse(content);
+          const validCats = ['image','video','writing','code','audio','chat','design','3d','search','productivity','avatar'];
+          if (!validCats.includes(parsed.category)) { parsed.category = 'chat'; parsed.confidence = 0.5; }
+
+          return NextResponse.json({
+            intent: parsed.intent || `${parsed.category}-task`,
+            category: parsed.category,
+            confidence: parsed.confidence || 0.7,
+            keywords: parsed.keywords || [],
+            mode: parsed.mode || 'tool-finder',
+            model: 'openai',
+          });
+        }
+      } catch (e) {
+        console.warn('[JARVIS] OpenAI failed, trying Gemini:', e);
+      }
+    }
+
+    // TRY GEMINI SECOND
     const geminiKey = process.env.GEMINI_API_KEY;
     if (geminiKey) {
       try {
@@ -69,7 +106,7 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // TRY GROQ SECOND
+    // TRY GROQ THIRD
     const groqKey = process.env.GROQ_API_KEY;
     if (groqKey) {
       try {

@@ -7,16 +7,17 @@ export interface RelationshipData {
   lastSeen: number;
 }
 
-export const LEVEL_CONFIG = {
+export const LEVEL_CONFIG: Record<number, { name: string; emoji: string; greeting: string }> = {
   1: { name: 'Stranger',     emoji: '👋', greeting: 'Hello! Main JARVIS hoon. Kya karna hai?' },
   2: { name: 'Acquaintance', emoji: '🤝', greeting: 'Wapas aaye! Kya karna hai aaj?' },
   3: { name: 'Friend',       emoji: '😊', greeting: 'Aye! Kya scene hai aaj?' },
   4: { name: 'Best Friend',  emoji: '🔥', greeting: 'AAYO! Aaj kya banaoge?' },
-  5: { name: 'JARVIS Mode',  emoji: '🤖', greeting: '...' },
+  5: { name: 'JARVIS Mode',  emoji: '🤖', greeting: 'System ready. How can I assist you today?' },
 };
 
 function safeGet(): RelationshipData {
   try {
+    if (typeof window === 'undefined') return { totalInteractions: 0, level: 1, firstMet: Date.now(), lastSeen: Date.now() };
     const item = localStorage.getItem(KEY);
     return item ? JSON.parse(item) : { totalInteractions: 0, level: 1, firstMet: Date.now(), lastSeen: Date.now() };
   } catch { return { totalInteractions: 0, level: 1, firstMet: Date.now(), lastSeen: Date.now() }; }
@@ -39,7 +40,11 @@ export const relationship = {
     data.totalInteractions++;
     data.lastSeen = Date.now();
     data.level = calcLevel(data.totalInteractions);
-    try { localStorage.setItem(KEY, JSON.stringify(data)); } catch {}
+    try { 
+      if (typeof window !== 'undefined') {
+        localStorage.setItem(KEY, JSON.stringify(data)); 
+      }
+    } catch {}
     return { data, leveledUp: data.level > oldLevel };
   },
 

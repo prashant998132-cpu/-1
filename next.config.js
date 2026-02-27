@@ -1,7 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  // PWA headers
   async headers() {
     return [
       {
@@ -11,11 +10,6 @@ const nextConfig = {
           { key: 'Content-Type', value: 'application/javascript; charset=utf-8' },
         ],
       },
-    ];
-  },
-  // Security headers
-  async headers() {
-    return [
       {
         source: '/(.*)',
         headers: [
@@ -29,7 +23,7 @@ const nextConfig = {
               "script-src 'self' 'unsafe-eval' 'unsafe-inline'",
               "style-src 'self' 'unsafe-inline'",
               "img-src 'self' data: https:",
-              "connect-src 'self' https://generativelanguage.googleapis.com",
+              "connect-src 'self' https://generativelanguage.googleapis.com https://api.openai.com",
               "font-src 'self'",
             ].join('; '),
           },
